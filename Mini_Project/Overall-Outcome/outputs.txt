@@ -1,0 +1,1132 @@
+MYSQL COMMANDS:
+
+
+mysql> create table clickstreamtb(
+    -> userID INT(10),
+    -> timestamp TIMESTAMP,
+    -> page VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table customertb(
+    -> userID INT(10),
+    -> name VARCHAR(15),
+    -> email VARCHAR(40)
+    -> );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create table purchasetb(
+    -> userID INT(10),
+    -> timestamp TIMESTAMP,
+    -> amount DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++-----------------------+
+| Tables_in_ecommercedb |
++-----------------------+
+| clickstreamtb         |
+| customertb            |
+| purchasetb            |
++-----------------------+
+3 rows in set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv' 
+    -> INTO TABLE clickstreamtb
+    -> FIELDS TERMINATED BY ','
+    -> LINES TERMINATED BY '\n'
+    -> IGNORE 1 LINES;
+Query OK, 13 rows affected, 13 warnings (0.00 sec)
+Records: 13  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> selct * from clickstreamtb;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct * from clickstreamtb' at line 1
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+      |0 | 2023-01-01 10:00:00 | homepage"
+  |    0 | 2023-01-01 10:01:00 | product_page"
+      |0 | 2023-01-01 10:02:00 | homepage"
+     | 0 | 2023-01-01 10:03:00 | cart_page"
+      |0 | 2023-01-01 10:05:00 | homepage"
+  |    0 | 2023-01-01 10:06:00 | product_page"
+     | 0 | 2023-01-01 10:07:00 | cart_page"
+      |0 | 2023-01-01 10:09:00 | homepage"
+  |    0 | 2023-01-01 10:10:00 | product_page"
+     | 0 | 2023-01-01 10:11:00 | cart_page"
+ |     0 | 2023-01-01 10:12:00 | checkout_page"
+      |0 | 2023-01-01 10:15:00 | homepage"
+|      0 | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> select * from clickstream where userID = 1;
+ERROR 1146 (42S02): Table 'ecommercedb.clickstream' doesn't exist
+mysql> select * from clickstreamtb where userID = 1;
+Empty set (0.00 sec)
+
+mysql> delete from clickstreamtb;
+Query OK, 13 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',';
+Query OK, 14 rows affected, 15 warnings (0.00 sec)
+Records: 14  Deleted: 0  Skipped: 0  Warnings: 1
+
+mysql> select userID from clickstreamtb;
++--------+
+| userID |
++--------+
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
++--------+
+14 rows in set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+          |0000-00-00 00:00:00 | page"
+      |0 | 2023-01-01 10:00:00 | homepage"
+  |    0 | 2023-01-01 10:01:00 | product_page"
+      |0 | 2023-01-01 10:02:00 | homepage"
+     | 0 | 2023-01-01 10:03:00 | cart_page"
+      |0 | 2023-01-01 10:05:00 | homepage"
+  |    0 | 2023-01-01 10:06:00 | product_page"
+     | 0 | 2023-01-01 10:07:00 | cart_page"
+      |0 | 2023-01-01 10:09:00 | homepage"
+  |    0 | 2023-01-01 10:10:00 | product_page"
+     | 0 | 2023-01-01 10:11:00 | cart_page"
+ |     0 | 2023-01-01 10:12:00 | checkout_page"
+      |0 | 2023-01-01 10:15:00 | homepage"
+|      0 | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+14 rows in set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 10 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
+
+mysql> select * from customertb;
+Empty set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+------------------------------+
+| userID | timestamp           | page                         |
++--------+---------------------+------------------------------+
+                       |:00:00 | page"
+                   |1 10:00:00 | homepage"
+               |01-01 10:01:00 | product_page"
+                   |1 10:02:00 | homepage"
+                  |01 10:03:00 | cart_page"
+                   |1 10:05:00 | homepage"
+               |01-01 10:06:00 | product_page"
+                  |01 10:07:00 | cart_page"
+                   |1 10:09:00 | homepage"
+               |01-01 10:10:00 | product_page"
+                  |01 10:11:00 | cart_page"
+              |-01-01 10:12:00 | checkout_page"
+                   |1 10:15:00 | homepage"
+|      0 | 2023-01-01 10:16:00 | product_page"                |
+       | | 0000-00-00 00:00:00 | john.doe@example.com"
+     | 0 | 0000-00-00 00:00:00 | jane.smith@example.com"
+ |     0 | 0000-00-00 00:00:00 | robert.johnson@example.com"
+     | 0 | 0000-00-00 00:00:00 | lisa.brown@example.com"
+|      0 | 0000-00-00 00:00:00 | michael.wilson@example.com"  |
++--------+---------------------+------------------------------+
+19 rows in set (0.00 sec)
+
+mysql> delete from clickstreamtb;
+Query OK, 19 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE customertb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 13 rows affected, 13 warnings (0.00 sec)
+Records: 13  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     | 0 | Jane Smith     | jane.smith@example.com"
+ |     0 | Robert Johnson | robert.johnson@example.com"
+     | 0 | Lisa Brown     | lisa.brown@example.com"
+|      0 | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> describe customertb;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| userID | int(10)     | YES  |     | NULL    |       |
+| name   | varchar(15) | YES  |     | NULL    |       |
+| email  | varchar(40) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table customertb
+    -> modify column userID VARCHAR(10);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> delete from customertb;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> describe customertb;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| userID | varchar(10) | YES  |     | NULL    |       |
+| name   | varchar(15) | YES  |     | NULL    |       |
+| email  | varchar(40) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE customertb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |"3     | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| "5     | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select userID from customertb;
++--------+
+| userID |
++--------+
+| "1     |
+| "2     |
+| "3     |
+| "4     |
+| "5     |
++--------+
+5 rows in set (0.00 sec)
+
+mysql> alter table clickstreamtb modify column userID VARCHAR(10);
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+
+mysql> delete from clickstreamtb;
+Query OK, 13 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 13 rows affected (0.00 sec)
+Records: 13  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> alter table purchasetb modify column userID VARCHAR(10);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from purchasetb;
+Empty set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/purchase_data.csv'  INTO TABLE purchasetb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
+
+mysql> select * from purchasetb;
++--------+---------------------+--------+
+| userID | timestamp           | amount |
++--------+---------------------+--------+
+| "1     | 2023-01-01 10:05:00 | 100.00 |
+| "2     | 2023-01-01 10:08:00 | 150.00 |
+| "3     | 2023-01-01 10:09:00 | 200.00 |
+| "4     | 2023-01-01 10:13:00 | 120.00 |
+| "5     | 2023-01-01 10:17:00 |  80.00 |
++--------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from purchasetb;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/purchase_data.csv'  INTO TABLE purchasetb FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 LINES;
+Query OK, 1 row affected, 3 warnings (0.00 sec)
+Records: 1  Deleted: 0  Skipped: 0  Warnings: 3
+
+mysql> select * from purchasetb;
++------------+---------------------+--------+
+| userID     | timestamp           | amount |
++------------+---------------------+--------+
+| 1,2023-01- | 2023-07-20 15:54:24 |   NULL |
++------------+---------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> delete from purchasetb;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/purchase_data.csv'  INTO TABLE purchasetb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
+
+mysql> select * from purchasetb;
++--------+---------------------+--------+
+| userID | timestamp           | amount |
++--------+---------------------+--------+
+| "1     | 2023-01-01 10:05:00 | 100.00 |
+| "2     | 2023-01-01 10:08:00 | 150.00 |
+| "3     | 2023-01-01 10:09:00 | 200.00 |
+| "4     | 2023-01-01 10:13:00 | 120.00 |
+| "5     | 2023-01-01 10:17:00 |  80.00 |
++--------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |"3     | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| "5     | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table customertb modify column userID INT(10);
+Query OK, 5 rows affected, 5 warnings (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     | 0 | Jane Smith     | jane.smith@example.com"
+ |     0 | Robert Johnson | robert.johnson@example.com"
+     | 0 | Lisa Brown     | lisa.brown@example.com"
+|      0 | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table customertb modify column userID INTVARCHAR(10);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INTVARCHAR(10)' at line 1
+mysql> alter table customertb modify column userID VARCHAR(10);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |0      | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| 0      | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table customertb modify column userID INT(10);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> delete from customertb;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE customertb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     | 0 | Jane Smith     | jane.smith@example.com"
+ |     0 | Robert Johnson | robert.johnson@example.com"
+     | 0 | Lisa Brown     | lisa.brown@example.com"
+|      0 | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> describe customertb;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| userID | int(10)     | YES  |     | NULL    |       |
+| name   | varchar(15) | YES  |     | NULL    |       |
+| email  | varchar(40) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+      |  | 2023-01-01 10:00:00 | homepage"
+  |1     | 2023-01-01 10:01:00 | product_page"
+      |  | 2023-01-01 10:02:00 | homepage"
+     |   | 2023-01-01 10:03:00 | cart_page"
+      |  | 2023-01-01 10:05:00 | homepage"
+  |3     | 2023-01-01 10:06:00 | product_page"
+     |   | 2023-01-01 10:07:00 | cart_page"
+      |  | 2023-01-01 10:09:00 | homepage"
+  |4     | 2023-01-01 10:10:00 | product_page"
+     |   | 2023-01-01 10:11:00 | cart_page"
+ |"4     | 2023-01-01 10:12:00 | checkout_page"
+      |  | 2023-01-01 10:15:00 | homepage"
+| "5     | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> select userID from clickstreamtb;
++--------+
+| userID |
++--------+
+| "1     |
+| "1     |
+| "2     |
+| "2     |
+| "3     |
+| "3     |
+| "3     |
+| "4     |
+| "4     |
+| "4     |
+| "4     |
+| "5     |
+| "5     |
++--------+
+13 rows in set (0.00 sec)
+
+mysql> describe clickstreamtb
+    -> ;
++-----------+-------------+------+-----+-------------------+-----------------------------+
+| Field     | Type        | Null | Key | Default           | Extra                       |
++-----------+-------------+------+-----+-------------------+-----------------------------+
+| userID    | varchar(10) | YES  |     | NULL              |                             |
+| timestamp | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| page      | varchar(30) | YES  |     | NULL              |                             |
++-----------+-------------+------+-----+-------------------+-----------------------------+
+3 rows in set (0.01 sec)
+
+mysql> alter table clickstreamtb modify column userID VARCHAR(10);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table customertb modify column userID VARCHAR(10);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select userID from clickstreamtb;
++--------+
+| userID |
++--------+
+| "1     |
+| "1     |
+| "2     |
+| "2     |
+| "3     |
+| "3     |
+| "3     |
+| "4     |
+| "4     |
+| "4     |
+| "4     |
+| "5     |
+| "5     |
++--------+
+13 rows in set (0.00 sec)
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |0      | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| 0      | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+      |  | 2023-01-01 10:00:00 | homepage"
+  |1     | 2023-01-01 10:01:00 | product_page"
+      |  | 2023-01-01 10:02:00 | homepage"
+     |   | 2023-01-01 10:03:00 | cart_page"
+      |  | 2023-01-01 10:05:00 | homepage"
+  |3     | 2023-01-01 10:06:00 | product_page"
+     |   | 2023-01-01 10:07:00 | cart_page"
+      |  | 2023-01-01 10:09:00 | homepage"
+  |4     | 2023-01-01 10:10:00 | product_page"
+     |   | 2023-01-01 10:11:00 | cart_page"
+ |"4     | 2023-01-01 10:12:00 | checkout_page"
+      |  | 2023-01-01 10:15:00 | homepage"
+| "5     | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> use ecommercedb;
+Database changed
+mysql> alter table purchasetb add primary key (userID);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> alter table customertb add primary key (userID);
+ERROR 1062 (23000): Duplicate entry '0' for key 'PRIMARY'
+mysql> alter table clickstreamtb add primary key (userID);
+ERROR 1062 (23000): Duplicate entry '"1' for key 'PRIMARY'
+mysql> 
+
+
+SQOOP COMMANDS:
+
+
+[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/ecommercedb --table purchasetb --fields-terminated-by ',' --username training --password training
+23/07/20 16:13:44 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+23/07/20 16:13:44 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+23/07/20 16:13:44 INFO tool.CodeGenTool: Beginning code generation
+23/07/20 16:13:45 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `purchasetb` AS t LIMIT 1
+23/07/20 16:13:45 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `purchasetb` AS t LIMIT 1
+23/07/20 16:13:45 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+Note: /tmp/sqoop-training/compile/f00fc2780ed17bfd3f7e54b8a0cc12bd/purchasetb.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+23/07/20 16:13:47 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/f00fc2780ed17bfd3f7e54b8a0cc12bd/purchasetb.jar
+23/07/20 16:13:47 WARN manager.MySQLManager: It looks like you are importing from mysql.
+23/07/20 16:13:47 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+23/07/20 16:13:47 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+23/07/20 16:13:47 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+23/07/20 16:13:47 INFO mapreduce.ImportJobBase: Beginning import of purchasetb
+23/07/20 16:13:49 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+23/07/20 16:13:52 INFO db.DataDrivenDBInputFormat: BoundingValsQuery: SELECT MIN(`userID`), MAX(`userID`) FROM `purchasetb`
+23/07/20 16:13:52 WARN db.TextSplitter: Generating splits for a textual index column.
+23/07/20 16:13:52 WARN db.TextSplitter: If your database sorts in a case-insensitive order, this may result in a partial import or duplicate records.
+23/07/20 16:13:52 WARN db.TextSplitter: You are strongly encouraged to choose an integral split column.
+23/07/20 16:13:53 INFO mapred.JobClient: Running job: job_202307201512_0001
+23/07/20 16:13:54 INFO mapred.JobClient:  map 0% reduce 0%
+23/07/20 16:14:08 INFO mapred.JobClient:  map 50% reduce 0%
+23/07/20 16:14:14 INFO mapred.JobClient:  map 75% reduce 0%
+23/07/20 16:14:15 INFO mapred.JobClient:  map 100% reduce 0%
+23/07/20 16:14:18 INFO mapred.JobClient: Job complete: job_202307201512_0001
+23/07/20 16:14:18 INFO mapred.JobClient: Counters: 23
+23/07/20 16:14:18 INFO mapred.JobClient:   File System Counters
+23/07/20 16:14:18 INFO mapred.JobClient:     FILE: Number of bytes read=0
+23/07/20 16:14:18 INFO mapred.JobClient:     FILE: Number of bytes written=796816
+23/07/20 16:14:18 INFO mapred.JobClient:     FILE: Number of read operations=0
+23/07/20 16:14:18 INFO mapred.JobClient:     FILE: Number of large read operations=0
+23/07/20 16:14:18 INFO mapred.JobClient:     FILE: Number of write operations=0
+23/07/20 16:14:18 INFO mapred.JobClient:     HDFS: Number of bytes read=449
+23/07/20 16:14:18 INFO mapred.JobClient:     HDFS: Number of bytes written=159
+23/07/20 16:14:18 INFO mapred.JobClient:     HDFS: Number of read operations=4
+23/07/20 16:14:18 INFO mapred.JobClient:     HDFS: Number of large read operations=0
+23/07/20 16:14:18 INFO mapred.JobClient:     HDFS: Number of write operations=4
+23/07/20 16:14:18 INFO mapred.JobClient:   Job Counters 
+23/07/20 16:14:18 INFO mapred.JobClient:     Launched map tasks=4
+23/07/20 16:14:18 INFO mapred.JobClient:     Total time spent by all maps in occupied slots (ms)=35346
+23/07/20 16:14:18 INFO mapred.JobClient:     Total time spent by all reduces in occupied slots (ms)=0
+23/07/20 16:14:18 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+23/07/20 16:14:18 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+23/07/20 16:14:18 INFO mapred.JobClient:   Map-Reduce Framework
+23/07/20 16:14:18 INFO mapred.JobClient:     Map input records=5
+23/07/20 16:14:18 INFO mapred.JobClient:     Map output records=5
+23/07/20 16:14:18 INFO mapred.JobClient:     Input split bytes=449
+23/07/20 16:14:18 INFO mapred.JobClient:     Spilled Records=0
+23/07/20 16:14:18 INFO mapred.JobClient:     CPU time spent (ms)=5770
+23/07/20 16:14:18 INFO mapred.JobClient:     Physical memory (bytes) snapshot=359002112
+23/07/20 16:14:18 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=1611931648
+23/07/20 16:14:18 INFO mapred.JobClient:     Total committed heap usage (bytes)=288096256
+23/07/20 16:14:18 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 29.8961 seconds (0 bytes/sec)
+23/07/20 16:14:18 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/ecommercedb --connection-manager org.apache.sqoop.manager.MySQLManager --username training --password training --table purchasetb --hive-import --create-hive-table --target-dir /user/temp3 --hive-drop-import-delims --m 1
+23/07/20 16:26:29 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+23/07/20 16:26:29 INFO tool.BaseSqoopTool: Using Hive-specific delimiters for output. You can override
+23/07/20 16:26:29 INFO tool.BaseSqoopTool: delimiters with --fields-terminated-by, etc.
+23/07/20 16:26:29 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+23/07/20 16:26:29 INFO tool.CodeGenTool: Beginning code generation
+23/07/20 16:26:30 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `purchasetb` AS t LIMIT 1
+23/07/20 16:26:30 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `purchasetb` AS t LIMIT 1
+23/07/20 16:26:30 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+Note: /tmp/sqoop-training/compile/41b309132d856350fd3175f0babde11c/purchasetb.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+23/07/20 16:26:32 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/41b309132d856350fd3175f0babde11c/purchasetb.jar
+23/07/20 16:26:32 WARN manager.MySQLManager: It looks like you are importing from mysql.
+23/07/20 16:26:32 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+23/07/20 16:26:32 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+23/07/20 16:26:32 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+23/07/20 16:26:32 INFO mapreduce.ImportJobBase: Beginning import of purchasetb
+23/07/20 16:26:34 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+23/07/20 16:26:35 INFO mapred.JobClient: Running job: job_202307201512_0002
+23/07/20 16:26:36 INFO mapred.JobClient:  map 0% reduce 0%
+23/07/20 16:26:47 INFO mapred.JobClient:  map 100% reduce 0%
+23/07/20 16:26:50 INFO mapred.JobClient: Job complete: job_202307201512_0002
+23/07/20 16:26:50 INFO mapred.JobClient: Counters: 23
+23/07/20 16:26:50 INFO mapred.JobClient:   File System Counters
+23/07/20 16:26:50 INFO mapred.JobClient:     FILE: Number of bytes read=0
+23/07/20 16:26:50 INFO mapred.JobClient:     FILE: Number of bytes written=199200
+23/07/20 16:26:50 INFO mapred.JobClient:     FILE: Number of read operations=0
+23/07/20 16:26:50 INFO mapred.JobClient:     FILE: Number of large read operations=0
+23/07/20 16:26:50 INFO mapred.JobClient:     FILE: Number of write operations=0
+23/07/20 16:26:50 INFO mapred.JobClient:     HDFS: Number of bytes read=87
+23/07/20 16:26:50 INFO mapred.JobClient:     HDFS: Number of bytes written=159
+23/07/20 16:26:50 INFO mapred.JobClient:     HDFS: Number of read operations=1
+23/07/20 16:26:50 INFO mapred.JobClient:     HDFS: Number of large read operations=0
+23/07/20 16:26:50 INFO mapred.JobClient:     HDFS: Number of write operations=1
+23/07/20 16:26:50 INFO mapred.JobClient:   Job Counters 
+23/07/20 16:26:50 INFO mapred.JobClient:     Launched map tasks=1
+23/07/20 16:26:50 INFO mapred.JobClient:     Total time spent by all maps in occupied slots (ms)=12867
+23/07/20 16:26:50 INFO mapred.JobClient:     Total time spent by all reduces in occupied slots (ms)=0
+23/07/20 16:26:50 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+23/07/20 16:26:50 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+23/07/20 16:26:50 INFO mapred.JobClient:   Map-Reduce Framework
+23/07/20 16:26:50 INFO mapred.JobClient:     Map input records=5
+23/07/20 16:26:50 INFO mapred.JobClient:     Map output records=5
+23/07/20 16:26:50 INFO mapred.JobClient:     Input split bytes=87
+23/07/20 16:26:50 INFO mapred.JobClient:     Spilled Records=0
+23/07/20 16:26:50 INFO mapred.JobClient:     CPU time spent (ms)=1270
+23/07/20 16:26:50 INFO mapred.JobClient:     Physical memory (bytes) snapshot=87924736
+23/07/20 16:26:50 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=405864448
+23/07/20 16:26:50 INFO mapred.JobClient:     Total committed heap usage (bytes)=63700992
+23/07/20 16:26:50 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 18.1192 seconds (0 bytes/sec)
+23/07/20 16:26:50 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+23/07/20 16:26:50 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `purchasetb` AS t LIMIT 1
+23/07/20 16:26:50 WARN hive.TableDefWriter: Column timestamp had to be cast to a less precise type in Hive
+23/07/20 16:26:50 WARN hive.TableDefWriter: Column amount had to be cast to a less precise type in Hive
+23/07/20 16:26:51 INFO hive.HiveImport: Removing temporary files from import process: hdfs://0.0.0.0:8020/user/temp3/_logs
+23/07/20 16:26:51 INFO hive.HiveImport: Loading uploaded data into Hive
+23/07/20 16:26:54 INFO hive.HiveImport: Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+23/07/20 16:26:54 INFO hive.HiveImport: Hive history file=/tmp/training/hive_job_log_training_202307201626_935249329.txt
+23/07/20 16:27:00 INFO hive.HiveImport: OK
+23/07/20 16:27:00 INFO hive.HiveImport: Time taken: 5.819 seconds
+23/07/20 16:27:00 INFO hive.HiveImport: Loading data to table default.purchasetb
+23/07/20 16:27:01 INFO hive.HiveImport: OK
+23/07/20 16:27:01 INFO hive.HiveImport: Time taken: 0.39 seconds
+23/07/20 16:27:01 INFO hive.HiveImport: Hive import complete.
+23/07/20 16:27:01 INFO hive.HiveImport: Export directory is empty, removing it.
+[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/ecommercedb --connection-manager org.apache.sqoop.manager.MySQLManager --username training --password training --table customertb --hive-import --create-hive-table --target-dir /user/temp2 --hive-drop-import-delims --m 1
+23/07/20 16:27:28 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+23/07/20 16:27:28 INFO tool.BaseSqoopTool: Using Hive-specific delimiters for output. You can override
+23/07/20 16:27:28 INFO tool.BaseSqoopTool: delimiters with --fields-terminated-by, etc.
+23/07/20 16:27:28 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+23/07/20 16:27:28 INFO tool.CodeGenTool: Beginning code generation
+23/07/20 16:27:28 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customertb` AS t LIMIT 1
+23/07/20 16:27:28 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customertb` AS t LIMIT 1
+23/07/20 16:27:28 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+Note: /tmp/sqoop-training/compile/1d11cf26d0bc337dc01a5c5a898ca961/customertb.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+23/07/20 16:27:30 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/1d11cf26d0bc337dc01a5c5a898ca961/customertb.jar
+23/07/20 16:27:30 WARN manager.MySQLManager: It looks like you are importing from mysql.
+23/07/20 16:27:30 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+23/07/20 16:27:30 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+23/07/20 16:27:30 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+23/07/20 16:27:30 INFO mapreduce.ImportJobBase: Beginning import of customertb
+23/07/20 16:27:32 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+23/07/20 16:27:34 INFO mapred.JobClient: Running job: job_202307201512_0003
+23/07/20 16:27:35 INFO mapred.JobClient:  map 0% reduce 0%
+23/07/20 16:27:46 INFO mapred.JobClient:  map 100% reduce 0%
+23/07/20 16:27:49 INFO mapred.JobClient: Job complete: job_202307201512_0003
+23/07/20 16:27:49 INFO mapred.JobClient: Counters: 23
+23/07/20 16:27:49 INFO mapred.JobClient:   File System Counters
+23/07/20 16:27:49 INFO mapred.JobClient:     FILE: Number of bytes read=0
+23/07/20 16:27:49 INFO mapred.JobClient:     FILE: Number of bytes written=198681
+23/07/20 16:27:49 INFO mapred.JobClient:     FILE: Number of read operations=0
+23/07/20 16:27:49 INFO mapred.JobClient:     FILE: Number of large read operations=0
+23/07/20 16:27:49 INFO mapred.JobClient:     FILE: Number of write operations=0
+23/07/20 16:27:49 INFO mapred.JobClient:     HDFS: Number of bytes read=87
+23/07/20 16:27:49 INFO mapred.JobClient:     HDFS: Number of bytes written=197
+23/07/20 16:27:49 INFO mapred.JobClient:     HDFS: Number of read operations=1
+23/07/20 16:27:49 INFO mapred.JobClient:     HDFS: Number of large read operations=0
+23/07/20 16:27:49 INFO mapred.JobClient:     HDFS: Number of write operations=1
+23/07/20 16:27:49 INFO mapred.JobClient:   Job Counters 
+23/07/20 16:27:49 INFO mapred.JobClient:     Launched map tasks=1
+23/07/20 16:27:49 INFO mapred.JobClient:     Total time spent by all maps in occupied slots (ms)=12676
+23/07/20 16:27:49 INFO mapred.JobClient:     Total time spent by all reduces in occupied slots (ms)=0
+23/07/20 16:27:49 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+23/07/20 16:27:49 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+23/07/20 16:27:49 INFO mapred.JobClient:   Map-Reduce Framework
+23/07/20 16:27:49 INFO mapred.JobClient:     Map input records=5
+23/07/20 16:27:49 INFO mapred.JobClient:     Map output records=5
+23/07/20 16:27:49 INFO mapred.JobClient:     Input split bytes=87
+23/07/20 16:27:49 INFO mapred.JobClient:     Spilled Records=0
+23/07/20 16:27:49 INFO mapred.JobClient:     CPU time spent (ms)=1140
+23/07/20 16:27:49 INFO mapred.JobClient:     Physical memory (bytes) snapshot=86212608
+23/07/20 16:27:49 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=403169280
+23/07/20 16:27:49 INFO mapred.JobClient:     Total committed heap usage (bytes)=63700992
+23/07/20 16:27:49 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 18.3849 seconds (0 bytes/sec)
+23/07/20 16:27:49 INFO mapreduce.ImportJobBase: Retrieved 5 records.
+23/07/20 16:27:49 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `customertb` AS t LIMIT 1
+23/07/20 16:27:49 INFO hive.HiveImport: Removing temporary files from import process: hdfs://0.0.0.0:8020/user/temp2/_logs
+23/07/20 16:27:49 INFO hive.HiveImport: Loading uploaded data into Hive
+23/07/20 16:27:52 INFO hive.HiveImport: Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+23/07/20 16:27:52 INFO hive.HiveImport: Hive history file=/tmp/training/hive_job_log_training_202307201627_1906363394.txt
+23/07/20 16:27:59 INFO hive.HiveImport: OK
+23/07/20 16:27:59 INFO hive.HiveImport: Time taken: 5.805 seconds
+23/07/20 16:27:59 INFO hive.HiveImport: Loading data to table default.customertb
+23/07/20 16:27:59 INFO hive.HiveImport: OK
+23/07/20 16:27:59 INFO hive.HiveImport: Time taken: 0.394 seconds
+23/07/20 16:27:59 INFO hive.HiveImport: Hive import complete.
+23/07/20 16:27:59 INFO hive.HiveImport: Export directory is empty, removing it.
+[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/ecommercedb --connection-manager org.apache.sqoop.manager.MySQLManager --username training --password training --table clickstreamtb --hive-import --create-hive-table --target-dir /user/temp1 --hive-drop-import-delims --m 1
+23/07/20 16:28:23 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+23/07/20 16:28:23 INFO tool.BaseSqoopTool: Using Hive-specific delimiters for output. You can override
+23/07/20 16:28:23 INFO tool.BaseSqoopTool: delimiters with --fields-terminated-by, etc.
+23/07/20 16:28:23 INFO manager.MySQLManager: Preparing to use a MySQL streaming resultset.
+23/07/20 16:28:23 INFO tool.CodeGenTool: Beginning code generation
+23/07/20 16:28:23 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `clickstreamtb` AS t LIMIT 1
+23/07/20 16:28:23 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `clickstreamtb` AS t LIMIT 1
+23/07/20 16:28:23 INFO orm.CompilationManager: HADOOP_HOME is /usr/lib/hadoop
+Note: /tmp/sqoop-training/compile/1a3503b69ec9e573e9450636f56397b9/clickstreamtb.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+23/07/20 16:28:25 INFO orm.CompilationManager: Writing jar file: /tmp/sqoop-training/compile/1a3503b69ec9e573e9450636f56397b9/clickstreamtb.jar
+23/07/20 16:28:25 WARN manager.MySQLManager: It looks like you are importing from mysql.
+23/07/20 16:28:25 WARN manager.MySQLManager: This transfer can be faster! Use the --direct
+23/07/20 16:28:25 WARN manager.MySQLManager: option to exercise a MySQL-specific fast path.
+23/07/20 16:28:25 INFO manager.MySQLManager: Setting zero DATETIME behavior to convertToNull (mysql)
+23/07/20 16:28:25 INFO mapreduce.ImportJobBase: Beginning import of clickstreamtb
+23/07/20 16:28:27 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+23/07/20 16:28:29 INFO mapred.JobClient: Running job: job_202307201512_0004
+23/07/20 16:28:30 INFO mapred.JobClient:  map 0% reduce 0%
+23/07/20 16:28:40 INFO mapred.JobClient:  map 100% reduce 0%
+23/07/20 16:28:43 INFO mapred.JobClient: Job complete: job_202307201512_0004
+23/07/20 16:28:43 INFO mapred.JobClient: Counters: 23
+23/07/20 16:28:43 INFO mapred.JobClient:   File System Counters
+23/07/20 16:28:43 INFO mapred.JobClient:     FILE: Number of bytes read=0
+23/07/20 16:28:43 INFO mapred.JobClient:     FILE: Number of bytes written=198700
+23/07/20 16:28:43 INFO mapred.JobClient:     FILE: Number of read operations=0
+23/07/20 16:28:43 INFO mapred.JobClient:     FILE: Number of large read operations=0
+23/07/20 16:28:43 INFO mapred.JobClient:     FILE: Number of write operations=0
+23/07/20 16:28:43 INFO mapred.JobClient:     HDFS: Number of bytes read=87
+23/07/20 16:28:43 INFO mapred.JobClient:     HDFS: Number of bytes written=479
+23/07/20 16:28:43 INFO mapred.JobClient:     HDFS: Number of read operations=1
+23/07/20 16:28:43 INFO mapred.JobClient:     HDFS: Number of large read operations=0
+23/07/20 16:28:43 INFO mapred.JobClient:     HDFS: Number of write operations=1
+23/07/20 16:28:43 INFO mapred.JobClient:   Job Counters 
+23/07/20 16:28:43 INFO mapred.JobClient:     Launched map tasks=1
+23/07/20 16:28:43 INFO mapred.JobClient:     Total time spent by all maps in occupied slots (ms)=12636
+23/07/20 16:28:43 INFO mapred.JobClient:     Total time spent by all reduces in occupied slots (ms)=0
+23/07/20 16:28:43 INFO mapred.JobClient:     Total time spent by all maps waiting after reserving slots (ms)=0
+23/07/20 16:28:43 INFO mapred.JobClient:     Total time spent by all reduces waiting after reserving slots (ms)=0
+23/07/20 16:28:43 INFO mapred.JobClient:   Map-Reduce Framework
+23/07/20 16:28:43 INFO mapred.JobClient:     Map input records=13
+23/07/20 16:28:43 INFO mapred.JobClient:     Map output records=13
+23/07/20 16:28:43 INFO mapred.JobClient:     Input split bytes=87
+23/07/20 16:28:43 INFO mapred.JobClient:     Spilled Records=0
+23/07/20 16:28:43 INFO mapred.JobClient:     CPU time spent (ms)=1120
+23/07/20 16:28:43 INFO mapred.JobClient:     Physical memory (bytes) snapshot=86650880
+23/07/20 16:28:43 INFO mapred.JobClient:     Virtual memory (bytes) snapshot=404803584
+23/07/20 16:28:43 INFO mapred.JobClient:     Total committed heap usage (bytes)=63700992
+23/07/20 16:28:43 INFO mapreduce.ImportJobBase: Transferred 0 bytes in 17.3385 seconds (0 bytes/sec)
+23/07/20 16:28:43 INFO mapreduce.ImportJobBase: Retrieved 13 records.
+23/07/20 16:28:43 INFO manager.SqlManager: Executing SQL statement: SELECT t.* FROM `clickstreamtb` AS t LIMIT 1
+23/07/20 16:28:43 WARN hive.TableDefWriter: Column timestamp had to be cast to a less precise type in Hive
+23/07/20 16:28:43 INFO hive.HiveImport: Removing temporary files from import process: hdfs://0.0.0.0:8020/user/temp1/_logs
+23/07/20 16:28:43 INFO hive.HiveImport: Loading uploaded data into Hive
+23/07/20 16:28:47 INFO hive.HiveImport: Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+23/07/20 16:28:47 INFO hive.HiveImport: Hive history file=/tmp/training/hive_job_log_training_202307201628_1123376436.txt
+23/07/20 16:28:53 INFO hive.HiveImport: OK
+23/07/20 16:28:53 INFO hive.HiveImport: Time taken: 5.793 seconds
+23/07/20 16:28:53 INFO hive.HiveImport: Loading data to table default.clickstreamtb
+23/07/20 16:28:53 INFO hive.HiveImport: OK
+23/07/20 16:28:53 INFO hive.HiveImport: Time taken: 0.374 seconds
+23/07/20 16:28:53 INFO hive.HiveImport: Hive import complete.
+23/07/20 16:28:53 INFO hive.HiveImport: Export directory is empty, removing it.
+[training@localhost ~]$ sqoop import --connect jdbc:mysql://localhost/ecommercedb --connection-manager org.apache.sqoop.manager.MySQLManager --username training --password training --table clickstreamtb --hive-import --create-hive-table clickstream --m 1
+23/07/20 16:29:49 WARN tool.BaseSqoopTool: Setting your password on the command-line is insecure. Consider using -P instead.
+23/07/20 16:29:49 ERROR tool.BaseSqoopTool: Error parsing arguments for import:
+23/07/20 16:29:49 ERROR tool.BaseSqoopTool: Unrecognized argument: clickstream
+23/07/20 16:29:49 ERROR tool.BaseSqoopTool: Unrecognized argument: --m
+23/07/20 16:29:49 ERROR tool.BaseSqoopTool: Unrecognized argument: 1
+
+Try --help for usage instructions.
+usage: sqoop import [GENERIC-ARGS] [TOOL-ARGS]
+
+Common arguments:
+   --connect <jdbc-uri>                         Specify JDBC connect
+                                                string
+   --connection-manager <class-name>            Specify connection manager
+                                                class name
+   --connection-param-file <properties-file>    Specify connection
+                                                parameters file
+   --driver <class-name>                        Manually specify JDBC
+                                                driver class to use
+   --hadoop-home <dir>                          Override $HADOOP_HOME
+   --help                                       Print usage instructions
+-P                                              Read password from console
+   --password <password>                        Set authentication
+                                                password
+   --username <username>                        Set authentication
+                                                username
+   --verbose                                    Print more information
+                                                while working
+
+Import control arguments:
+   --append                        Imports data in append mode
+   --as-avrodatafile               Imports data to Avro data files
+   --as-sequencefile               Imports data to SequenceFiles
+   --as-textfile                   Imports data as plain text (default)
+   --boundary-query <statement>    Set boundary query for retrieving max
+                                   and min value of the primary key
+   --columns <col,col,col...>      Columns to import from table
+   --compression-codec <codec>     Compression codec to use for import
+   --direct                        Use direct import fast path
+   --direct-split-size <n>         Split the input stream every 'n' bytes
+                                   when importing in direct mode
+-e,--query <statement>             Import results of SQL 'statement'
+   --fetch-size <n>                Set number 'n' of rows to fetch from
+                                   the database when more rows are needed
+   --inline-lob-limit <n>          Set the maximum size for an inline LOB
+-m,--num-mappers <n>               Use 'n' map tasks to import in parallel
+   --split-by <column-name>        Column of the table used to split work
+                                   units
+   --table <table-name>            Table to read
+   --target-dir <dir>              HDFS plain table destination
+   --warehouse-dir <dir>           HDFS parent for table destination
+   --where <where clause>          WHERE clause to use during import
+-z,--compress                      Enable compression
+
+Incremental import arguments:
+   --check-column <column>        Source column to check for incremental
+                                  change
+   --incremental <import-type>    Define an incremental import of type
+                                  'append' or 'lastmodified'
+   --last-value <value>           Last imported value in the incremental
+                                  check column
+
+Output line formatting arguments:
+   --enclosed-by <char>               Sets a required field enclosing
+                                      character
+   --escaped-by <char>                Sets the escape character
+   --fields-terminated-by <char>      Sets the field separator character
+   --lines-terminated-by <char>       Sets the end-of-line character
+   --mysql-delimiters                 Uses MySQL's default delimiter set:
+                                      fields: ,  lines: \n  escaped-by: \
+                                      optionally-enclosed-by: '
+   --optionally-enclosed-by <char>    Sets a field enclosing character
+
+Input parsing arguments:
+   --input-enclosed-by <char>               Sets a required field encloser
+   --input-escaped-by <char>                Sets the input escape
+                                            character
+   --input-fields-terminated-by <char>      Sets the input field separator
+   --input-lines-terminated-by <char>       Sets the input end-of-line
+                                            char
+   --input-optionally-enclosed-by <char>    Sets a field enclosing
+                                            character
+
+Hive arguments:
+   --create-hive-table                         Fail if the target hive
+                                               table exists
+   --hive-delims-replacement <arg>             Replace Hive record \0x01
+                                               and row delimiters (\n\r)
+                                               from imported string fields
+                                               with user-defined string
+   --hive-drop-import-delims                   Drop Hive record \0x01 and
+                                               row delimiters (\n\r) from
+                                               imported string fields
+   --hive-home <dir>                           Override $HIVE_HOME
+   --hive-import                               Import tables into Hive
+                                               (Uses Hive's default
+                                               delimiters if none are
+                                               set.)
+   --hive-overwrite                            Overwrite existing data in
+                                               the Hive table
+   --hive-partition-key <partition-key>        Sets the partition key to
+                                               use when importing to hive
+   --hive-partition-value <partition-value>    Sets the partition value to
+                                               use when importing to hive
+   --hive-table <table-name>                   Sets the table name to use
+                                               when importing to hive
+   --map-column-hive <arg>                     Override mapping for
+                                               specific column to hive
+                                               types.
+
+HBase arguments:
+   --column-family <family>    Sets the target column family for the
+                               import
+   --hbase-create-table        If specified, create missing HBase tables
+   --hbase-row-key <col>       Specifies which input column to use as the
+                               row key
+   --hbase-table <table>       Import to <table> in HBase
+
+Code generation arguments:
+   --bindir <dir>                        Output directory for compiled
+                                         objects
+   --class-name <name>                   Sets the generated class name.
+                                         This overrides --package-name.
+                                         When combined with --jar-file,
+                                         sets the input class.
+   --input-null-non-string <null-str>    Input null non-string
+                                         representation
+   --input-null-string <null-str>        Input null string representation
+   --jar-file <file>                     Disable code generation; use
+                                         specified jar
+   --map-column-java <arg>               Override mapping for specific
+                                         columns to java types
+   --null-non-string <null-str>          Null non-string representation
+   --null-string <null-str>              Null string representation
+   --outdir <dir>                        Output directory for generated
+                                         code
+   --package-name <name>                 Put auto-generated classes in
+                                         this package
+
+Generic Hadoop command-line arguments:
+(must preceed any tool-specific arguments)
+Generic options supported are
+-conf <configuration file>     specify an application configuration file
+-D <property=value>            use value for given property
+-fs <local|namenode:port>      specify a namenode
+-jt <local|jobtracker:port>    specify a job tracker
+-files <comma separated list of files>    specify comma separated files to be copied to the map reduce cluster
+-libjars <comma separated list of jars>    specify comma separated jar files to include in the classpath.
+-archives <comma separated list of archives>    specify comma separated archives to be unarchived on the compute machines.
+
+The general command line syntax is
+bin/hadoop command [genericOptions] [commandOptions]
+
+
+At minimum, you must specify --connect and --table
+Arguments to mysqldump and other subprograms may be supplied
+after a '--' on the command line.
+[training@localhost ~]$ 
+
+
+
+HIVE COMMANDS:
+
+
+
+[training@localhost ~]$ hive
+Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties
+Hive history file=/tmp/training/hive_job_log_training_202307201518_2067190772.txt
+hive> select * from purchasetb;
+OK
+"1	2023-01-01 10:05:00.0	100.0
+"2	2023-01-01 10:08:00.0	150.0
+"3	2023-01-01 10:09:00.0	200.0
+"4	2023-01-01 10:13:00.0	120.0
+"5	2023-01-01 10:17:00.0	80.0
+Time taken: 5.761 seconds
+hive> select * from customertb;
+OK
+0	John Doe	john.doe@example.com"
+0	Jane Smith	jane.smith@example.com"
+0	Robert Johnson	robert.johnson@example.com"
+0	Lisa Brown	lisa.brown@example.com"
+0	Michael Wilson	michael.wilson@example.com"
+Time taken: 0.149 seconds
+hive> select * from clickstreamtb;
+OK
+"1	2023-01-01 10:00:00.0	homepage"
+"1	2023-01-01 10:01:00.0	product_page"
+"2	2023-01-01 10:02:00.0	homepage"
+"2	2023-01-01 10:03:00.0	cart_page"
+"3	2023-01-01 10:05:00.0	homepage"
+"3	2023-01-01 10:06:00.0	product_page"
+"3	2023-01-01 10:07:00.0	cart_page"
+"4	2023-01-01 10:09:00.0	homepage"
+"4	2023-01-01 10:10:00.0	product_page"
+"4	2023-01-01 10:11:00.0	cart_page"
+"4	2023-01-01 10:12:00.0	checkout_page"
+"5	2023-01-01 10:15:00.0	homepage"
+"5	2023-01-01 10:16:00.0	product_page"
+Time taken: 0.111 seconds
+hive> select count(*) from clickstreamtb;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_202307201512_0005, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202307201512_0005
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202307201512_0005
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-20 16:58:01,997 Stage-1 map = 0%,  reduce = 0%
+2023-07-20 16:58:08,100 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.27 sec
+2023-07-20 16:58:09,125 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.27 sec
+2023-07-20 16:58:10,138 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.27 sec
+2023-07-20 16:58:11,152 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.27 sec
+2023-07-20 16:58:12,176 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 2.27 sec
+2023-07-20 16:58:13,199 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.89 sec
+2023-07-20 16:58:14,219 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.89 sec
+2023-07-20 16:58:15,237 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.89 sec
+2023-07-20 16:58:16,256 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.89 sec
+2023-07-20 16:58:17,270 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.89 sec
+MapReduce Total cumulative CPU time: 4 seconds 890 msec
+Ended Job = job_202307201512_0005
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 4.89 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 890 msec
+OK
+13
+Time taken: 22.434 seconds
+hive> select count(*) from purchasetb;   
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_202307201512_0006, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202307201512_0006
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202307201512_0006
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-20 16:58:45,512 Stage-1 map = 0%,  reduce = 0%
+2023-07-20 16:58:50,558 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 16:58:51,570 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 16:58:52,583 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 16:58:53,597 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 16:58:54,614 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 16:58:55,637 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.05 sec
+2023-07-20 16:58:56,658 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.05 sec
+2023-07-20 16:58:57,675 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.05 sec
+2023-07-20 16:58:58,700 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.05 sec
+MapReduce Total cumulative CPU time: 4 seconds 50 msec
+Ended Job = job_202307201512_0006
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 4.05 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 50 msec
+OK
+5
+Time taken: 18.943 seconds
+hive> select min(amount), max(amount) from purchasetb;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_202307201512_0007, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202307201512_0007
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202307201512_0007
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-20 17:00:31,164 Stage-1 map = 0%,  reduce = 0%
+2023-07-20 17:00:35,222 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2023-07-20 17:00:36,235 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2023-07-20 17:00:37,247 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2023-07-20 17:00:38,262 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2023-07-20 17:00:39,279 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2023-07-20 17:00:40,298 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.51 sec
+2023-07-20 17:00:41,317 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.09 sec
+2023-07-20 17:00:42,342 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.09 sec
+2023-07-20 17:00:43,377 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.09 sec
+2023-07-20 17:00:44,392 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.09 sec
+2023-07-20 17:00:45,412 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.09 sec
+MapReduce Total cumulative CPU time: 4 seconds 90 msec
+Ended Job = job_202307201512_0007
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 4.09 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 90 msec
+OK
+80.0	200.0
+Time taken: 20.053 seconds
+hive> select avg(amount) from purchasetb;             
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_202307201512_0008, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202307201512_0008
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202307201512_0008
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-20 17:04:40,887 Stage-1 map = 0%,  reduce = 0%
+2023-07-20 17:04:45,952 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 17:04:46,985 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 17:04:48,004 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 17:04:49,052 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 17:04:50,067 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 17:04:51,086 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.5 sec
+2023-07-20 17:04:52,104 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.56 sec
+2023-07-20 17:04:53,123 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.56 sec
+2023-07-20 17:04:54,153 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.56 sec
+2023-07-20 17:04:55,170 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.56 sec
+2023-07-20 17:04:56,184 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 4.56 sec
+MapReduce Total cumulative CPU time: 4 seconds 560 msec
+Ended Job = job_202307201512_0008
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 4.56 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 4 seconds 560 msec
+OK
+130.0
+Time taken: 21.08 seconds
+hive> select median(amount) from purchasetb;
+FAILED: SemanticException [Error 10011]: Line 1:7 Invalid function 'median'
+hive> select mean(amount) from purchasetb;  
+FAILED: SemanticException [Error 10011]: Line 1:7 Invalid function 'mean'
+hive> select select customertb.name, customertb.email, customertb, purchasetb.timestamps
+    > from customertb join purchasetb on customertb.userid = purchasetb.userid;
+FAILED: ParseException line 1:7 cannot recognize input near 'select' 'customertb' '.' in select clause
+
+hive> select customertb.name, customertb.email, customertb, purchasetb.timestamps       
+    > from customertb join purchasetb on customertb.userid = purchasetb.userid;  
+FAILED: SemanticException null
+hive> select clickstreamtb.pages,purchasetb.timestamps                               
+    > from clickstreamtb join purchasetb on clickstreamtb.userid = purchasetb.userid;
+FAILED: SemanticException [Error 10002]: Line 1:21 Invalid column reference 'pages'
+hive> select clickstreamtb.page,purchasetb.timestamps                                
+    > from clickstreamtb join purchasetb on clickstreamtb.userid = purchasetb.userid;
+FAILED: SemanticException [Error 10002]: Line 1:37 Invalid column reference 'timestamps'
+hive> select sum(amount) from purchasetb;
+Total MapReduce jobs = 1
+Launching Job 1 out of 1
+Number of reduce tasks determined at compile time: 1
+In order to change the average load for a reducer (in bytes):
+  set hive.exec.reducers.bytes.per.reducer=<number>
+In order to limit the maximum number of reducers:
+  set hive.exec.reducers.max=<number>
+In order to set a constant number of reducers:
+  set mapred.reduce.tasks=<number>
+Starting Job = job_202307201512_0009, Tracking URL = http://0.0.0.0:50030/jobdetails.jsp?jobid=job_202307201512_0009
+Kill Command = /usr/lib/hadoop/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_202307201512_0009
+Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1
+2023-07-20 17:12:35,768 Stage-1 map = 0%,  reduce = 0%
+2023-07-20 17:12:40,822 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+2023-07-20 17:12:41,833 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+2023-07-20 17:12:42,847 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+2023-07-20 17:12:43,862 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+2023-07-20 17:12:44,882 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+2023-07-20 17:12:45,909 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 1.29 sec
+2023-07-20 17:12:46,924 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.99 sec
+2023-07-20 17:12:47,937 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.99 sec
+2023-07-20 17:12:48,962 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.99 sec
+2023-07-20 17:12:49,977 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 3.99 sec
+MapReduce Total cumulative CPU time: 3 seconds 990 msec
+Ended Job = job_202307201512_0009
+MapReduce Jobs Launched: 
+Job 0: Map: 1  Reduce: 1   Cumulative CPU: 3.99 sec   HDFS Read: 0 HDFS Write: 0 SUCCESS
+Total MapReduce CPU Time Spent: 3 seconds 990 msec
+OK
+650.0
+Time taken: 18.999 seconds
+hive> 
+
+

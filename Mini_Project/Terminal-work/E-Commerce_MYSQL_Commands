@@ -1,0 +1,498 @@
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 3
+mysql> create table clickstreamtb(
+    -> userID INT(10),
+    -> timestamp TIMESTAMP,
+    -> page VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table customertb(
+    -> userID INT(10),
+    -> name VARCHAR(15),
+    -> email VARCHAR(40)
+    -> );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> create table purchasetb(
+    -> userID INT(10),
+    -> timestamp TIMESTAMP,
+    -> amount DECIMAL(10, 2)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show tables;
++-----------------------+
+| Tables_in_ecommercedb |
++-----------------------+
+| clickstreamtb         |
+| customertb            |
+| purchasetb            |
++-----------------------+
+3 rows in set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv' 
+    -> INTO TABLE clickstreamtb
+    -> FIELDS TERMINATED BY ','
+    -> LINES TERMINATED BY '\n'
+    -> IGNORE 1 LINES;
+Query OK, 13 rows affected, 13 warnings (0.00 sec)
+Records: 13  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> selct * from clickstreamtb;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'selct * from clickstreamtb' at line 1
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+      |0 | 2023-01-01 10:00:00 | homepage"
+  |    0 | 2023-01-01 10:01:00 | product_page"
+      |0 | 2023-01-01 10:02:00 | homepage"
+     | 0 | 2023-01-01 10:03:00 | cart_page"
+      |0 | 2023-01-01 10:05:00 | homepage"
+  |    0 | 2023-01-01 10:06:00 | product_page"
+     | 0 | 2023-01-01 10:07:00 | cart_page"
+      |0 | 2023-01-01 10:09:00 | homepage"
+  |    0 | 2023-01-01 10:10:00 | product_page"
+     | 0 | 2023-01-01 10:11:00 | cart_page"
+ |     0 | 2023-01-01 10:12:00 | checkout_page"
+      |0 | 2023-01-01 10:15:00 | homepage"
+|      0 | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> select * from clickstream where userID = 1;
+ERROR 1146 (42S02): Table 'ecommercedb.clickstream' doesn't exist
+mysql> select * from clickstreamtb where userID = 1;
+Empty set (0.00 sec)
+
+mysql> delete from clickstreamtb;
+Query OK, 13 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',';
+Query OK, 14 rows affected, 15 warnings (0.00 sec)
+Records: 14  Deleted: 0  Skipped: 0  Warnings: 1
+
+mysql> select userID from clickstreamtb;
++--------+
+| userID |
++--------+
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
+|      0 |
++--------+
+14 rows in set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+          |0000-00-00 00:00:00 | page"
+      |0 | 2023-01-01 10:00:00 | homepage"
+  |    0 | 2023-01-01 10:01:00 | product_page"
+      |0 | 2023-01-01 10:02:00 | homepage"
+     | 0 | 2023-01-01 10:03:00 | cart_page"
+      |0 | 2023-01-01 10:05:00 | homepage"
+  |    0 | 2023-01-01 10:06:00 | product_page"
+     | 0 | 2023-01-01 10:07:00 | cart_page"
+      |0 | 2023-01-01 10:09:00 | homepage"
+  |    0 | 2023-01-01 10:10:00 | product_page"
+     | 0 | 2023-01-01 10:11:00 | cart_page"
+ |     0 | 2023-01-01 10:12:00 | checkout_page"
+      |0 | 2023-01-01 10:15:00 | homepage"
+|      0 | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+14 rows in set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 10 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
+
+mysql> select * from customertb;
+Empty set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+------------------------------+
+| userID | timestamp           | page                         |
++--------+---------------------+------------------------------+
+                       |:00:00 | page"
+                   |1 10:00:00 | homepage"
+               |01-01 10:01:00 | product_page"
+                   |1 10:02:00 | homepage"
+                  |01 10:03:00 | cart_page"
+                   |1 10:05:00 | homepage"
+               |01-01 10:06:00 | product_page"
+                  |01 10:07:00 | cart_page"
+                   |1 10:09:00 | homepage"
+               |01-01 10:10:00 | product_page"
+                  |01 10:11:00 | cart_page"
+              |-01-01 10:12:00 | checkout_page"
+                   |1 10:15:00 | homepage"
+|      0 | 2023-01-01 10:16:00 | product_page"                |
+       | | 0000-00-00 00:00:00 | john.doe@example.com"
+     | 0 | 0000-00-00 00:00:00 | jane.smith@example.com"
+ |     0 | 0000-00-00 00:00:00 | robert.johnson@example.com"
+     | 0 | 0000-00-00 00:00:00 | lisa.brown@example.com"
+|      0 | 0000-00-00 00:00:00 | michael.wilson@example.com"  |
++--------+---------------------+------------------------------+
+19 rows in set (0.00 sec)
+
+mysql> delete from clickstreamtb;
+Query OK, 19 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE customertb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 13 rows affected, 13 warnings (0.00 sec)
+Records: 13  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     | 0 | Jane Smith     | jane.smith@example.com"
+ |     0 | Robert Johnson | robert.johnson@example.com"
+     | 0 | Lisa Brown     | lisa.brown@example.com"
+|      0 | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> describe customertb;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| userID | int(10)     | YES  |     | NULL    |       |
+| name   | varchar(15) | YES  |     | NULL    |       |
+| email  | varchar(40) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table customertb
+    -> modify column userID VARCHAR(10);
+Query OK, 5 rows affected (0.02 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> delete from customertb;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> describe customertb;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| userID | varchar(10) | YES  |     | NULL    |       |
+| name   | varchar(15) | YES  |     | NULL    |       |
+| email  | varchar(40) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE customertb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |"3     | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| "5     | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select userID from customertb;
++--------+
+| userID |
++--------+
+| "1     |
+| "2     |
+| "3     |
+| "4     |
+| "5     |
++--------+
+5 rows in set (0.00 sec)
+
+mysql> alter table clickstreamtb modify column userID VARCHAR(10);
+Query OK, 13 rows affected (0.01 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+
+mysql> delete from clickstreamtb;
+Query OK, 13 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/clickstream_data.csv'  INTO TABLE clickstreamtb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 13 rows affected (0.00 sec)
+Records: 13  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> alter table purchasetb modify column userID VARCHAR(10);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from purchasetb;
+Empty set (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/purchase_data.csv'  INTO TABLE purchasetb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
+
+mysql> select * from purchasetb;
++--------+---------------------+--------+
+| userID | timestamp           | amount |
++--------+---------------------+--------+
+| "1     | 2023-01-01 10:05:00 | 100.00 |
+| "2     | 2023-01-01 10:08:00 | 150.00 |
+| "3     | 2023-01-01 10:09:00 | 200.00 |
+| "4     | 2023-01-01 10:13:00 | 120.00 |
+| "5     | 2023-01-01 10:17:00 |  80.00 |
++--------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> delete from purchasetb;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/purchase_data.csv'  INTO TABLE purchasetb FIELDS TERMINATED BY ',' ENCLOSED BY '"' IGNORE 1 LINES;
+Query OK, 1 row affected, 3 warnings (0.00 sec)
+Records: 1  Deleted: 0  Skipped: 0  Warnings: 3
+
+mysql> select * from purchasetb;
++------------+---------------------+--------+
+| userID     | timestamp           | amount |
++------------+---------------------+--------+
+| 1,2023-01- | 2023-07-20 15:54:24 |   NULL |
++------------+---------------------+--------+
+1 row in set (0.00 sec)
+
+mysql> delete from purchasetb;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/purchase_data.csv'  INTO TABLE purchasetb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 5
+
+mysql> select * from purchasetb;
++--------+---------------------+--------+
+| userID | timestamp           | amount |
++--------+---------------------+--------+
+| "1     | 2023-01-01 10:05:00 | 100.00 |
+| "2     | 2023-01-01 10:08:00 | 150.00 |
+| "3     | 2023-01-01 10:09:00 | 200.00 |
+| "4     | 2023-01-01 10:13:00 | 120.00 |
+| "5     | 2023-01-01 10:17:00 |  80.00 |
++--------+---------------------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |"3     | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| "5     | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table customertb modify column userID INT(10);
+Query OK, 5 rows affected, 5 warnings (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     | 0 | Jane Smith     | jane.smith@example.com"
+ |     0 | Robert Johnson | robert.johnson@example.com"
+     | 0 | Lisa Brown     | lisa.brown@example.com"
+|      0 | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table customertb modify column userID INTVARCHAR(10);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'INTVARCHAR(10)' at line 1
+mysql> alter table customertb modify column userID VARCHAR(10);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |0      | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| 0      | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> alter table customertb modify column userID INT(10);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> delete from customertb;
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> LOAD DATA LOCAL INFILE '/home/training/Project2023/customer_data.csv'  INTO TABLE customertb FIELDS TERMINATED BY ',' IGNORE 1 LINES;
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Deleted: 0  Skipped: 0  Warnings: 0
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     | 0 | Jane Smith     | jane.smith@example.com"
+ |     0 | Robert Johnson | robert.johnson@example.com"
+     | 0 | Lisa Brown     | lisa.brown@example.com"
+|      0 | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> describe customertb;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| userID | int(10)     | YES  |     | NULL    |       |
+| name   | varchar(15) | YES  |     | NULL    |       |
+| email  | varchar(40) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+      |  | 2023-01-01 10:00:00 | homepage"
+  |1     | 2023-01-01 10:01:00 | product_page"
+      |  | 2023-01-01 10:02:00 | homepage"
+     |   | 2023-01-01 10:03:00 | cart_page"
+      |  | 2023-01-01 10:05:00 | homepage"
+  |3     | 2023-01-01 10:06:00 | product_page"
+     |   | 2023-01-01 10:07:00 | cart_page"
+      |  | 2023-01-01 10:09:00 | homepage"
+  |4     | 2023-01-01 10:10:00 | product_page"
+     |   | 2023-01-01 10:11:00 | cart_page"
+ |"4     | 2023-01-01 10:12:00 | checkout_page"
+      |  | 2023-01-01 10:15:00 | homepage"
+| "5     | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> select userID from clickstreamtb;
++--------+
+| userID |
++--------+
+| "1     |
+| "1     |
+| "2     |
+| "2     |
+| "3     |
+| "3     |
+| "3     |
+| "4     |
+| "4     |
+| "4     |
+| "4     |
+| "5     |
+| "5     |
++--------+
+13 rows in set (0.00 sec)
+
+mysql> describe clickstreamtb
+    -> ;
++-----------+-------------+------+-----+-------------------+-----------------------------+
+| Field     | Type        | Null | Key | Default           | Extra                       |
++-----------+-------------+------+-----+-------------------+-----------------------------+
+| userID    | varchar(10) | YES  |     | NULL              |                             |
+| timestamp | timestamp   | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| page      | varchar(30) | YES  |     | NULL              |                             |
++-----------+-------------+------+-----+-------------------+-----------------------------+
+3 rows in set (0.01 sec)
+
+mysql> alter table clickstreamtb modify column userID VARCHAR(10);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table customertb modify column userID VARCHAR(10);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select userID from clickstreamtb;
++--------+
+| userID |
++--------+
+| "1     |
+| "1     |
+| "2     |
+| "2     |
+| "3     |
+| "3     |
+| "3     |
+| "4     |
+| "4     |
+| "4     |
+| "4     |
+| "5     |
+| "5     |
++--------+
+13 rows in set (0.00 sec)
+
+mysql> select * from customertb;
++--------+----------------+------------------------------+
+| userID | name           | email                        |
++--------+----------------+------------------------------+
+       | | John Doe       | john.doe@example.com"
+     |   | Jane Smith     | jane.smith@example.com"
+ |0      | Robert Johnson | robert.johnson@example.com"
+     |   | Lisa Brown     | lisa.brown@example.com"
+| 0      | Michael Wilson | michael.wilson@example.com"  |
++--------+----------------+------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from clickstreamtb;
++--------+---------------------+-----------------+
+| userID | timestamp           | page            |
++--------+---------------------+-----------------+
+      |  | 2023-01-01 10:00:00 | homepage"
+  |1     | 2023-01-01 10:01:00 | product_page"
+      |  | 2023-01-01 10:02:00 | homepage"
+     |   | 2023-01-01 10:03:00 | cart_page"
+      |  | 2023-01-01 10:05:00 | homepage"
+  |3     | 2023-01-01 10:06:00 | product_page"
+     |   | 2023-01-01 10:07:00 | cart_page"
+      |  | 2023-01-01 10:09:00 | homepage"
+  |4     | 2023-01-01 10:10:00 | product_page"
+     |   | 2023-01-01 10:11:00 | cart_page"
+ |"4     | 2023-01-01 10:12:00 | checkout_page"
+      |  | 2023-01-01 10:15:00 | homepage"
+| "5     | 2023-01-01 10:16:00 | product_page"   |
++--------+---------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> use ecommercedb;
+Database changed
+mysql> alter table purchasetb add primary key (userID);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> alter table customertb add primary key (userID);
+ERROR 1062 (23000): Duplicate entry '0' for key 'PRIMARY'
+mysql> alter table clickstreamtb add primary key (userID);
+ERROR 1062 (23000): Duplicate entry '"1' for key 'PRIMARY'
+mysql> 
